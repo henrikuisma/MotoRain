@@ -1,4 +1,4 @@
-
+*.xcassets/
 *.xcodeproj
 *.xcworkspace
 *.xcuserdata/
