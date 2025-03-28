@@ -10,9 +10,10 @@ import MapKit
 
 struct ContentView: View {
     
-    @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
+    @StateObject private var mapManager = MapManager()
+    
     var body: some View {
-        Map(position: $position) {
+        Map(position: $mapManager.position) {
             
         }
         .mapControls{
@@ -20,7 +21,7 @@ struct ContentView: View {
             MapPitchToggle()
         }
         .onAppear {
-            CLLocationManager().requestWhenInUseAuthorization()
+            mapManager.updatePosition()
         }
     }
 }
