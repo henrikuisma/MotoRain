@@ -12,11 +12,12 @@ struct SearchBar: View {
     
     var body: some View {
         HStack {
-            TextField("Search", text: $text)
-                .padding(7)
+            TextField("Where to?", text: $text)
+                .padding()
                 .background(Color.white)
                 .cornerRadius(8)
                 .padding(.horizontal, 10)
+                .shadow(radius: 6)
                 .overlay(
                     HStack {
                         Spacer()
@@ -26,7 +27,7 @@ struct SearchBar: View {
                             }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(.gray)
-                                    .padding(.trailing, 10)
+                                    .padding(.trailing, 25)
                             }
                         }
                     }
