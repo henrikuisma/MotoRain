@@ -11,8 +11,10 @@ import MapKit
 struct ContentView: View {
     
     @StateObject private var mapManager = MapManager()
+    @State private var searchText = ""
     
     var body: some View {
+        
         Map(position: $mapManager.position) {
             
         }
@@ -20,6 +22,14 @@ struct ContentView: View {
             MapUserLocationButton()
             MapPitchToggle()
         }
+        
+        .overlay(
+            VStack {
+                Spacer()
+                SearchBar(text: $searchText)
+                    .padding(.bottom, 40)
+            }
+        )
         .onAppear {
             mapManager.updatePosition()
         }
