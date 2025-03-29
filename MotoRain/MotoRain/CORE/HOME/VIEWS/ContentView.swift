@@ -22,29 +22,32 @@ struct ContentView: View {
                     MapPitchToggle()
                 }
                 .padding(.top, 50)
+                
 
             VStack {
-                HStack {
-                    ActionButton()
-                }
-                .padding(.leading)
-                .padding(.top, 50)
                 Spacer()
-            }
             
-            VStack {
-                Spacer()
-                
                 if showLocationSearchView {
                     LocationSearchView()
                 } else {
                     SearchBar(text: $searchText)
-                        .padding(.bottom, 35)
+                        .padding(.bottom, 50)
                         .padding(.leading, 35)
                         .onTapGesture {
-                            showLocationSearchView.toggle()
+                            withAnimation(.spring()) {
+                                showLocationSearchView.toggle()
+                            }
                         }
                 }
+            }
+            VStack {
+                HStack{
+                    ActionButton(showLocationSearchView: $showLocationSearchView)
+                        .padding(.leading)
+                        .padding(.top, 50)
+                    Spacer()
+                }
+                Spacer()
             }
         }
         .ignoresSafeArea()
