@@ -33,3 +33,4 @@ fastlane/.env
 *.idea/
 *.vscode/
 *.orig
+*.entitlements
