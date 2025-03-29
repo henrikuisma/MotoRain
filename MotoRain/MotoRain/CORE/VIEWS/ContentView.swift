@@ -14,22 +14,29 @@ struct ContentView: View {
     @State private var searchText = ""
     
     var body: some View {
-        
-        Map(position: $mapManager.position) {
+        ZStack(alignment: .topLeading) {
+            Map(position: $mapManager.position)
+                .mapControls {
+                    MapUserLocationButton()
+                    MapPitchToggle()
+                }
+
+            VStack {
+                HStack {
+                    ActionButton()
+                        .padding(.leading, 20)
+                        .padding(.top)
+                    Spacer()
+                }
+                Spacer()
+            }
             
-        }
-        .mapControls{
-            MapUserLocationButton()
-            MapPitchToggle()
-        }
-        
-        .overlay(
             VStack {
                 Spacer()
                 SearchBar(text: $searchText)
                     .padding(.bottom, 40)
             }
-        )
+        }
         .onAppear {
             mapManager.updatePosition()
         }
