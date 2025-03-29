@@ -12,6 +12,7 @@ struct ContentView: View {
     
     @StateObject private var mapManager = MapManager()
     @State private var searchText = ""
+    @State private var showLocationSearchView = false
     
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -20,23 +21,33 @@ struct ContentView: View {
                     MapUserLocationButton()
                     MapPitchToggle()
                 }
+                .padding(.top, 50)
 
             VStack {
                 HStack {
                     ActionButton()
-                        .padding(.leading, 20)
-                        .padding(.top)
-                    Spacer()
                 }
+                .padding(.leading)
+                .padding(.top, 50)
                 Spacer()
             }
             
             VStack {
                 Spacer()
-                SearchBar(text: $searchText)
-                    .padding(.bottom, 40)
+                
+                if showLocationSearchView {
+                    LocationSearchView()
+                } else {
+                    SearchBar(text: $searchText)
+                        .padding(.bottom, 35)
+                        .padding(.leading, 35)
+                        .onTapGesture {
+                            showLocationSearchView.toggle()
+                        }
+                }
             }
         }
+        .ignoresSafeArea()
         .onAppear {
             mapManager.updatePosition()
         }

@@ -12,27 +12,14 @@ struct SearchBar: View {
     
     var body: some View {
         HStack {
-            TextField("Where to?", text: $text)
+            Text("Where to?")
+                .frame(width: UIScreen.main.bounds.width * 0.75)
                 .padding()
-                .background(Color.white)
+                .background(Color.white.opacity(0.9))
+                .foregroundColor(.black)
                 .cornerRadius(8)
-                .padding(.horizontal, 10)
                 .shadow(radius: 6)
-                .overlay(
-                    HStack {
-                        Spacer()
-                        if !text.isEmpty {
-                            Button(action: {
-                                text = ""
-                            }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.gray)
-                                    .padding(.trailing, 25)
-                            }
-                        }
-                    }
-                )
-                
+
         }
         
     }
