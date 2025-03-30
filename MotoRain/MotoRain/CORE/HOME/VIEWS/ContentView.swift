@@ -10,34 +10,34 @@ import MapKit
 
 struct ContentView: View {
     
-    @StateObject private var mapManager = MapManager()
+    @State private var isUserCentered = false
+    @State private var is3D = false
     @State private var searchText = ""
     @State private var showLocationSearchView = false
     
+    let mapView = MotoRainMapViewRepresentable()
+    
     var body: some View {
+        
         ZStack(alignment: .topLeading) {
-            Map(position: $mapManager.position)
-                .mapControls {
-                    MapUserLocationButton()
-                    MapPitchToggle()
-                }
-                .padding(.top, 50)
-                
-
+            MotoRainMapViewRepresentable()
+                .ignoresSafeArea()
+            
+            
             VStack {
                 Spacer()
-            
                 if showLocationSearchView {
                     LocationSearchView()
                 } else {
                     SearchBar(text: $searchText)
-                        .padding(.bottom, 50)
+                        .padding(.bottom, 75)
                         .padding(.leading, 35)
                         .onTapGesture {
                             withAnimation(.spring()) {
                                 showLocationSearchView.toggle()
-                            }
+
                         }
+                    }
                 }
             }
             VStack {
@@ -47,15 +47,13 @@ struct ContentView: View {
                         .padding(.top, 50)
                     Spacer()
                 }
-                Spacer()
             }
         }
         .ignoresSafeArea()
-        .onAppear {
-            mapManager.updatePosition()
-        }
+        
     }
 }
+
 
 #Preview {
     ContentView()
