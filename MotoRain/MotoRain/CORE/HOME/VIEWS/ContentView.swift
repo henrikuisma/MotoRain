@@ -10,24 +10,22 @@ import MapKit
 
 struct ContentView: View {
     
-    @State private var isUserCentered = false
-    @State private var is3D = false
     @State private var searchText = ""
     @State private var showLocationSearchView = false
     
-    let mapView = MotoRainMapViewRepresentable()
+    let mapView = MapViewRepresentable()
     
     var body: some View {
         
         ZStack(alignment: .topLeading) {
-            MotoRainMapViewRepresentable()
+            MapViewRepresentable()
                 .ignoresSafeArea()
             
             
             VStack {
                 Spacer()
                 if showLocationSearchView {
-                    LocationSearchView()
+                    LocationSearchView(showLocationSearchView: $showLocationSearchView)
                 } else {
                     SearchBar(text: $searchText)
                         .padding(.bottom, 75)
@@ -48,6 +46,7 @@ struct ContentView: View {
                     Spacer()
                 }
             }
+            
         }
         .ignoresSafeArea()
         
@@ -57,4 +56,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(LocationSearchViewModel())
 }

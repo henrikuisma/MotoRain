@@ -1,5 +1,5 @@
 //
-//  LocationSearch.swift
+//  LocationSearchViewModel.swift
 //  MotoRain
 //
 //  Created by Henri Kuisma on 29.3.2025.
@@ -11,19 +11,25 @@ import MapKit
 class LocationSearchViewModel: NSObject, ObservableObject {
     
     @Published var results = [MKLocalSearchCompletion]()
+    @Published var selectedLocation: String?
+    private let searchCompleter = MKLocalSearchCompleter()
+    @Published var shouldCenterUser = false
+    
     var queryFragment: String = "" {
         didSet {
             searchCompleter.queryFragment = queryFragment
         }
     }
     
-    private let searchCompleter = MKLocalSearchCompleter()
-    
     override init() {
         super.init()
         searchCompleter.delegate = self
         searchCompleter.queryFragment = queryFragment
         
+    }
+    
+    func selectLocation(_ Location: String) {
+        self.selectedLocation = Location
     }
 }
 

@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct MotoRainApp: App {
+    @StateObject var locationViewModel = LocationSearchViewModel()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(locationViewModel)
         }
     }
 }
