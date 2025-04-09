@@ -26,8 +26,8 @@ struct MapViewRepresentable: UIViewRepresentable {
     }
     
     func updateUIView(_ view: UIViewType, context: Context) {
-        if let selectedLocation = locationViewModel.selectedLocation {
-            print("selectedLocation: \(selectedLocation)")
+        if let coordinate = locationViewModel.selectedLocationCoordinate {
+            print("selectedLocation: \(coordinate)")
         }
         if locationViewModel.shouldCenterUser {
             context.coordinator.hasCenteredOnUser = false
