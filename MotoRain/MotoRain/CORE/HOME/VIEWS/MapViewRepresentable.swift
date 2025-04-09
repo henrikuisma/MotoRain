@@ -27,7 +27,7 @@ struct MapViewRepresentable: UIViewRepresentable {
     
     func updateUIView(_ view: UIViewType, context: Context) {
         if let coordinate = locationViewModel.selectedLocationCoordinate {
-            print("selectedLocation: \(coordinate)")
+            context.coordinator.addAndSelectAnnotation(withCoordinate: coordinate)
         }
         if locationViewModel.shouldCenterUser {
             context.coordinator.hasCenteredOnUser = false
@@ -64,6 +64,19 @@ extension MapViewRepresentable {
             parent.mapView.setRegion(region, animated: true)
             hasCenteredOnUser = true
             parent.locationViewModel.shouldCenterUser = false
+        }
+        
+        func addAndSelectAnnotation(withCoordinate coordinate: CLLocationCoordinate2D) {
+            
+            for annotation in parent.mapView.annotations {
+                    parent.mapView.removeAnnotation(annotation)
+                }
+            
+            let anno = MKPointAnnotation()
+            anno.coordinate = coordinate
+            self.parent.mapView.addAnnotation(anno)
+            
+            self.parent.mapView.selectAnnotation(anno, animated: true)
         }
     }
 }
