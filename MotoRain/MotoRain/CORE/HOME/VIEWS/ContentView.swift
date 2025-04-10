@@ -11,28 +11,27 @@ import MapKit
 struct ContentView: View {
     
     @State private var searchText = ""
-    @State private var showLocationSearchView = false
+    @State private var mapState = MapViewState.noInput
     
-    let mapView = MapViewRepresentable()
     
     var body: some View {
         
         ZStack(alignment: .topLeading) {
-            MapViewRepresentable()
+            MapViewRepresentable(mapState: $mapState)
                 .ignoresSafeArea()
             
             
             VStack {
                 Spacer()
-                if showLocationSearchView {
-                    LocationSearchView(showLocationSearchView: $showLocationSearchView)
-                } else {
+                if mapState == .searchingForLocation {
+                    LocationSearchView(mapState: $mapState)
+                } else if mapState == .noInput {
                     SearchBar(text: $searchText)
                         .padding(.bottom, 75)
                         .padding(.leading, 35)
                         .onTapGesture {
                             withAnimation(.spring()) {
-                                showLocationSearchView.toggle()
+                                mapState = .searchingForLocation
 
                         }
                     }
@@ -40,7 +39,7 @@ struct ContentView: View {
             }
             VStack {
                 HStack{
-                    ActionButton(showLocationSearchView: $showLocationSearchView)
+                    ActionButton(mapState: $mapState)
                         .padding(.leading)
                         .padding(.top, 50)
                     Spacer()
