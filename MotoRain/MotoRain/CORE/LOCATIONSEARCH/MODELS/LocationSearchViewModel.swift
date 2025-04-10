@@ -35,8 +35,12 @@ class LocationSearchViewModel: NSObject, ObservableObject {
                 print("Error searching: \(error.localizedDescription)")
                 return
             }
-            guard let item = response?.mapItems.first else { return }
+            guard let item = response?.mapItems.first else {
+                print("No results found")
+                return
+            }
             let coordinate = item.placemark.coordinate
+            print("Selected location coordinate: \(coordinate)")
             self.selectedLocationCoordinate = coordinate
         }
     }

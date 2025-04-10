@@ -24,14 +24,18 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     override init() {
         super.init()
         locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
         fetchUserAddress()
     }
+    
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse:
             authorisationStatus = .authorizedWhenInUse
             locationManager.requestLocation()
+            locationManager.startUpdatingLocation()
             break
             
         case .restricted:
@@ -51,8 +55,12 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             break
         }
     }
+
+
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        print("Location updated: \(location.coordinate)")
         fetchUserAddress()
         
     }
@@ -63,7 +71,10 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     
     private func fetchUserAddress() {
-        guard let location = locationManager.location else { return }
+        guard let location = locationManager.location else {
+            print("Location is not available")
+            return
+        }
         
         let geocoder = CLGeocoder()
         let userLocation = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
@@ -77,8 +88,10 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             if let placemark = placemarks?.first {
                 DispatchQueue.main.async {
                     self?.address = "\(placemark.name ?? ""), \(placemark.locality ?? ""), \(placemark.country ?? "")"
+                    print("Address updated: \(self?.address ?? "")") 
                 }
             }
         }
     }
+
 }
