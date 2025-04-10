@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ActionButton: View {
     @Binding var mapState: MapViewState
+    @EnvironmentObject var viewModel: LocationSearchViewModel
     var body: some View {
         Button {
             withAnimation(.spring()) {
@@ -33,7 +34,8 @@ struct ActionButton: View {
         case .searchingForLocation:
             mapState = .noInput
         case .locationSelected:
-            print("Clear map view...")
+            mapState = .noInput
+            viewModel.selectedLocationCoordinate = nil
         }
     }
     

@@ -26,13 +26,21 @@ struct MapViewRepresentable: UIViewRepresentable {
     }
     
     func updateUIView(_ view: UIViewType, context: Context) {
-        if let coordinate = locationViewModel.selectedLocationCoordinate {
-            context.coordinator.addAndSelectAnnotation(withCoordinate: coordinate)
-            context.coordinator.configurePolyline(withDestinationCoordinate: coordinate)
+        
+        switch mapState {
+        case .noInput:
+            context.coordinator.clearMapViewAndCenterOnUser()
+            break
+        case .searchingForLocation:
+            break
+        case .locationSelected:
+            if let coordinate = locationViewModel.selectedLocationCoordinate {
+                context.coordinator.addAndSelectAnnotation(withCoordinate: coordinate)
+                context.coordinator.configurePolyline(withDestinationCoordinate: coordinate)
+            }
+            break
         }
-        if locationViewModel.shouldCenterUser {
-            
-        }
+        
     }
     
     func makeCoordinator() -> MapCoordinator {
@@ -48,6 +56,7 @@ extension MapViewRepresentable {
     class MapCoordinator : NSObject, MKMapViewDelegate {
         let parent: MapViewRepresentable
         var userLocationCoordinate: CLLocationCoordinate2D?
+        var currentRegion: MKCoordinateRegion?
         
         init(parent: MapViewRepresentable) {
             self.parent = parent
@@ -62,7 +71,8 @@ extension MapViewRepresentable {
                 center: CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude, longitude: userLocation.coordinate.longitude),
                 span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
             )
-
+            
+            self.currentRegion = region
             parent.mapView.setRegion(region, animated: true)
             
         }
@@ -120,6 +130,13 @@ extension MapViewRepresentable {
                 
         }
         
-        
+        func clearMapViewAndCenterOnUser() {
+            parent.mapView.removeAnnotations(parent.mapView.annotations)
+            parent.mapView.removeOverlays(parent.mapView.overlays)
+            
+            if let currentRegion = currentRegion {
+                parent.mapView.setRegion(currentRegion, animated: true)
+            }
+        }
     }
 }
