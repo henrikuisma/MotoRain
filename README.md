@@ -1,17 +1,32 @@
 # MotoRain 💧🏍️
 
-**Work in progress 🚧**
+MotoRain is an unfinished iOS proof of concept for motorcycle route planning that aims to work like familiar apps (Apple Maps, Google Maps, etc.) but with a twist: it will highlight and suggest routes that avoid rainy areas.
 
-MotoRain is a route-planning app for motorcyclists. The goal is to display routes like Google Maps, but taking into account rainy areas and weather conditions.
+⚠️ Status: Early prototype, not a working app. Features, UI, and data sources are incomplete and may change.
 
-## Current Status
-- Modular project structure with cleaned-up files.
-- `ContentView` with `LocationSearch`, `SearchBar`, `ActionButton`, and dynamic search results.
-- MapKit integration showing user location and destination routes via `MKPolyline`.
-- `MotoRainMapViewRepresentable` with smooth UI transitions (`MapViewState`) and zoom adjusted for user and destination.
-- `LocationManager` handles automatic address fetching; markers placed on selection.
+## What it does now
+- SwiftUI wrapper around `MKMapView` (MapKit)
+- Shows user location and compass
+- Lets you select a destination
+- Draws a route polyline from your current location
 
-## Goals
-- Integrate weather data and rain-avoidance routing.
-- Implement ETA calculation and route optimization.
-- Enhance UI and provide full user experience.
+## Goal
+- Full route planning experience with weather awareness
+- Visualize rain along the route and suggest drier alternatives for riders
+- Explore Apple Intelligence to suggest helpful stops (e.g., gas stations, cafes, shelters) when avoiding rain isn’t possible—so riders can safely wait it out
+
+## Tech
+- Swift, SwiftUI + `UIViewRepresentable`
+- MapKit (`MKMapView`, `MKDirections`)
+- Coordinator pattern for map delegate handling
+
+## Getting started
+- Xcode 15+, iOS 17+ (adjust as needed)
+- Add NSLocationWhenInUseUsageDescription to Info.plist
+- Build and run (simulated or real location)
+
+## Contributing
+Issues and PRs are welcome—this is a proof of concept and evolving quickly.
+
+## License
+TBD
