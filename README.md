@@ -1,6 +1,6 @@
 # MotoRain 💧🏍️
 
-MotoRain is an unfinished iOS proof of concept for motorcycle route planning that aims to work like familiar apps (Apple Maps, Google Maps, etc.) but with a twist: it will highlight and suggest routes that avoid rainy areas.
+MotoRain is an iOS proof of concept for motorcycle route planning that aims to work like familiar apps (Apple Maps, Google Maps, etc.) but with a twist: it will highlight and suggest routes that avoid rainy areas.
 
 ⚠️ Status: Early prototype, not a working app. Features, UI, and data sources are incomplete and may change.
 
