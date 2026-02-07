@@ -18,11 +18,13 @@ struct ActionButton: View {
         } label: {
             Image(systemName: imageNameforState(mapState))
                 .font(.title2)
-                .foregroundColor(.black)
-                .padding()
-                .background(.white)
-                .clipShape(Circle())
-                .shadow(radius: 6)
+                .foregroundStyle(.black)
+                .padding(14)
+                .glassEffect(
+                    .regular.tint(.black.opacity(0.1)),
+                    in: .circle
+                )
+                .shadow(color: Color.black.opacity(0.02), radius: 8, y: 2)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -53,3 +55,4 @@ struct ActionButton: View {
     ActionButton(mapState:
             .constant(.noInput))
 }
+
