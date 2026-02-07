@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var searchText = ""
     @State private var mapState = MapViewState.noInput
     
+    @EnvironmentObject private var locationViewModel: LocationSearchViewModel
     
     var body: some View {
         
@@ -54,6 +55,24 @@ struct ContentView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            VStack {
+                Spacer()
+                if mapState == .locationSelected {
+                    DestinationView()
+                        .background(
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(Color(.systemBackground))
+                                .shadow(color: Color.black.opacity(0.15), radius: 12, y: -2)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        .padding(.horizontal)
+                        .padding(.bottom, 16)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .animation(.spring(response: 0.35, dampingFraction: 0.85), value: mapState)
+                }
+            }
+            .ignoresSafeArea(edges: .bottom)
         }
         .ignoresSafeArea()
         .ignoresSafeArea(.keyboard, edges: .bottom)

@@ -13,9 +13,11 @@ class LocationSearchViewModel: NSObject, ObservableObject {
     @Published var results = [MKLocalSearchCompletion]()
     @Published var selectedLocationCoordinate: CLLocationCoordinate2D?
     @Published var shouldCenterUser = false
+    @Published var selectedTitle: String?
+    @Published var selectedSubtitle: String?
+
     private let searchCompleter = MKLocalSearchCompleter()
 
-    
     var queryFragment: String = "" {
         didSet {
             searchCompleter.queryFragment = queryFragment
@@ -30,6 +32,9 @@ class LocationSearchViewModel: NSObject, ObservableObject {
     }
     
     func selectLocation(_ LocalSearch: MKLocalSearchCompletion) {
+        self.selectedTitle = LocalSearch.title
+        self.selectedSubtitle = LocalSearch.subtitle
+
         locationSearch(forLocalSearchCompletion: LocalSearch) { response, error in
             if let error = error {
                 print("Error searching: \(error.localizedDescription)")
@@ -39,7 +44,7 @@ class LocationSearchViewModel: NSObject, ObservableObject {
                 print("No results found")
                 return
             }
-            let coordinate = item.placemark.coordinate
+            let coordinate = item.location.coordinate
             print("Selected location coordinate: \(coordinate)")
             self.selectedLocationCoordinate = coordinate
         }
@@ -61,3 +66,4 @@ extension LocationSearchViewModel: MKLocalSearchCompleterDelegate {
         }
     }
 }
+
