@@ -21,7 +21,7 @@ MotoRain is an iOS proof of concept for motorcycle route planning that aims to w
 - Coordinator pattern for map delegate handling
 
 ## Getting started
-- Xcode 15+, iOS 17+ (adjust as needed)
+- Xcode 15+, iOS 26+ (adjust as needed)
 - Add NSLocationWhenInUseUsageDescription to Info.plist
 - Build and run (simulated or real location)
 
