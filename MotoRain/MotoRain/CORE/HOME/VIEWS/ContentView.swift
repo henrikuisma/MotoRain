@@ -20,20 +20,11 @@ struct ContentView: View {
             MapViewRepresentable(mapState: $mapState)
                 .ignoresSafeArea()
             
-            
             VStack {
-                Spacer()
-                if mapState == .searchingForLocation {
-                    LocationSearchView(mapState: $mapState)
-                } else if mapState == .noInput {
-                    SearchBar(text: $searchText)
-                        .padding(.bottom, 75)
-                        .padding(.leading, 35)
-                        .onTapGesture {
-                            withAnimation(.spring()) {
-                                mapState = .searchingForLocation
-
-                        }
+                HStack {
+                    if mapState == .searchingForLocation {
+                        LocationSearchView(mapState: $mapState)
+                            .padding(.top, 10)
                     }
                 }
             }
@@ -41,13 +32,31 @@ struct ContentView: View {
                 HStack{
                     ActionButton(mapState: $mapState)
                         .padding(.leading)
-                        .padding(.top, 50)
+                        .padding(.top, 40)
                     Spacer()
                 }
             }
-            
+            VStack {
+                Spacer()
+                
+                if mapState == .noInput {
+                    HStack {
+                        Spacer()
+                        SearchBar(text: $searchText)
+                            .onTapGesture {
+                                withAnimation(.spring()) {
+                                    mapState = .searchingForLocation
+                                }
+                            }
+                        Spacer()
+                    }
+                    .padding(.bottom, 70)
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .ignoresSafeArea()
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         
     }
 }
