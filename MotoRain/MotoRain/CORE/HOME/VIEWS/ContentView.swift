@@ -3,24 +3,28 @@
 //  MotoRain
 //
 //  Created by Henri Kuisma on 26.3.2025.
-//
 
 import SwiftUI
 import MapKit
 
 struct ContentView: View {
-    
+
     @State private var searchText = ""
     @State private var mapState = MapViewState.noInput
-    
+
+    @State private var selectedDetent: PresentationDetent = .fraction(0.55)
+
     @EnvironmentObject private var locationViewModel: LocationSearchViewModel
-    
+
     var body: some View {
-        
+
         ZStack(alignment: .topLeading) {
+
+            // MARK: Map
             MapViewRepresentable(mapState: $mapState)
                 .ignoresSafeArea()
-            
+
+            // MARK: Location search view
             VStack {
                 HStack {
                     if mapState == .searchingForLocation {
@@ -29,57 +33,68 @@ struct ContentView: View {
                     }
                 }
             }
+
+            // MARK: Action button
             VStack {
-                HStack{
+                HStack {
                     ActionButton(mapState: $mapState)
                         .padding(.leading)
                         .padding(.top, 40)
+
                     Spacer()
                 }
             }
+
+            // MARK: Bottom search bar
             VStack {
                 Spacer()
-                
+
                 if mapState == .noInput {
                     HStack {
                         Spacer()
+
                         SearchBar(text: $searchText)
                             .onTapGesture {
                                 withAnimation(.spring()) {
                                     mapState = .searchingForLocation
                                 }
                             }
+
                         Spacer()
                     }
                     .padding(.bottom, 70)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
-            VStack {
-                Spacer()
-                if mapState == .locationSelected {
-                    DestinationView()
-                        .background(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(Color(.systemBackground))
-                                .shadow(color: Color.black.opacity(0.15), radius: 12, y: -2)
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                        .padding(.horizontal)
-                        .padding(.bottom, 16)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .animation(.spring(response: 0.35, dampingFraction: 0.85), value: mapState)
-                }
-            }
-            .ignoresSafeArea(edges: .bottom)
         }
         .ignoresSafeArea()
         .ignoresSafeArea(.keyboard, edges: .bottom)
-        
+
+        .sheet(
+            isPresented: Binding<Bool>(
+                get: { mapState == .locationSelected },
+                set: { presented in
+                    if !presented {
+                        mapState = .noInput
+                    }
+                }
+            )
+        ) {
+            DestinationView(
+                isCollapsed: selectedDetent == .fraction(0.22)
+            )
+            .environmentObject(locationViewModel)
+            .presentationDetents(
+                [.height(110), .fraction(0.44)],
+                selection: $selectedDetent
+            )
+            .presentationDragIndicator(.visible)
+            .presentationBackground(.clear)
+            .presentationBackgroundInteraction(.enabled)
+            .presentationCornerRadius(40)
+        }
     }
 }
-
 
 #Preview {
     ContentView()

@@ -31,22 +31,25 @@ class LocationSearchViewModel: NSObject, ObservableObject {
         
     }
     
-    func selectLocation(_ LocalSearch: MKLocalSearchCompletion) {
+    func selectLocation(_ LocalSearch: MKLocalSearchCompletion, completion: (() -> Void)? = nil) {
         self.selectedTitle = LocalSearch.title
         self.selectedSubtitle = LocalSearch.subtitle
 
         locationSearch(forLocalSearchCompletion: LocalSearch) { response, error in
             if let error = error {
                 print("Error searching: \(error.localizedDescription)")
+                completion?()
                 return
             }
             guard let item = response?.mapItems.first else {
                 print("No results found")
+                completion?()
                 return
             }
             let coordinate = item.location.coordinate
             print("Selected location coordinate: \(coordinate)")
             self.selectedLocationCoordinate = coordinate
+            completion?()
         }
     }
     
@@ -66,4 +69,3 @@ extension LocationSearchViewModel: MKLocalSearchCompleterDelegate {
         }
     }
 }
-

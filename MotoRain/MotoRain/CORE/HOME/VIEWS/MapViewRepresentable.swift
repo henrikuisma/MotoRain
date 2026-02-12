@@ -30,7 +30,6 @@ struct MapViewRepresentable: UIViewRepresentable {
         switch mapState {
         case .noInput:
             context.coordinator.clearMapViewAndCenterOnUser()
-            break
         case .searchingForLocation:
             break
         case .locationSelected:
@@ -38,7 +37,6 @@ struct MapViewRepresentable: UIViewRepresentable {
                 context.coordinator.addAndSelectAnnotation(withCoordinate: coordinate)
                 context.coordinator.configurePolyline(withDestinationCoordinate: coordinate)
             }
-            break
         }
         
     }
@@ -112,11 +110,17 @@ extension MapViewRepresentable {
                                  to destination: CLLocationCoordinate2D,
                                  completion: @escaping(MKRoute) -> Void) {
             
-            let userPlacemark = MKPlacemark(coordinate: userLocation)
-            let destPlacemark = MKPlacemark(coordinate: destination)
+            let sourceLocation = CLLocation(latitude: userLocation.latitude, longitude: userLocation.longitude)
+            let destinationLocation = CLLocation(latitude: destination.latitude, longitude: destination.longitude)
+            
+            let sourceItem = MKMapItem(location: sourceLocation, address: nil)
+            let destinationItem = MKMapItem(location: destinationLocation, address: nil)
+            
             let request = MKDirections.Request()
-            request.source = MKMapItem(placemark: userPlacemark)
-            request.destination = MKMapItem(placemark: destPlacemark)
+            request.source = sourceItem
+            request.destination = destinationItem
+            request.transportType = .automobile
+            
             let directions = MKDirections(request: request)
             
             directions.calculate { response, error in

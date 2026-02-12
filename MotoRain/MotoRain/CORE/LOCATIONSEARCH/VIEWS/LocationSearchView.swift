@@ -56,9 +56,13 @@ struct LocationSearchView: View {
                     ForEach(viewModel.results, id: \.self) { result in
                             ResultCell(title: result.title, subtitle: result.subtitle)
                             .onTapGesture {
-                                viewModel.selectLocation(result)
-                                mapState = .locationSelected
-                                
+                                viewModel.selectLocation(result) {
+                                    DispatchQueue.main.async {
+                                        withAnimation(.spring()) {
+                                            mapState = .locationSelected
+                                        }
+                                    }
+                                }
                             }
                     }
                 }
