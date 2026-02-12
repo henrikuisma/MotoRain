@@ -108,6 +108,11 @@ struct DestinationView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 12)
         }
+        .glassEffect(
+            .regular.tint(.black.opacity(0.1)),
+            in: .rect(cornerRadius: 16, style: .continuous)
+        )
+        .shadow(color: Color.black.opacity(0.02), radius: 8, y: 2)
         .onChange(of: coordinateKey) { _, _ in
             loadLookAroundScene(for: locationViewModel.selectedLocationCoordinate)
         }
@@ -119,10 +124,6 @@ struct DestinationView: View {
     @ViewBuilder
     private func lookAroundCard() -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Look Around")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.secondary)
-            
             ZStack {
                 if isLoadingScene {
                     Color(.secondarySystemBackground)
@@ -189,4 +190,3 @@ struct DestinationView: View {
     DestinationView()
         .environmentObject(LocationSearchViewModel())
 }
-
